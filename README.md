@@ -110,3 +110,10 @@ If you use **mutfinder**, please cite the following works for the tools and data
 ## Comments and concerns
 
 If you have comments regarding this project, please open an **issue** in the GitHub repository **mutfinder**.
+
+---
+
+## Acknowledgements
+
+- **mutfinder** was developed for sequencing data analysis in the [Barkai Lab](https://barkailab.wixsite.com/barkai).
+- This project was created for the [Weizmann Institute of Science](https://www.weizmann.ac.il/pages/) [Python Course](https://github.com/szabgab/wis-python-course-2024-11) taught by [Gábor Szabó](https://szabgab.com/).
