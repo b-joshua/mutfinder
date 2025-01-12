@@ -36,7 +36,6 @@
 
 - [BioPython](https://biopython.org/docs/dev/api/Bio.Seq.html)
 - [gget](https://gget.readthedocs.io/)
-- [Pandas](https://pandas.pydata.org/)
 
 ---
 
