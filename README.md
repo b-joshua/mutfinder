@@ -86,6 +86,9 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species Homo_sapiens
 ```
 
+### Diagram of input-to-reference comparison
+<img  src="InputToReference.PNG"  width="250" style="float: left; padding: 20px;"/>
+
 ### Sample output file:
 
 | Date & Time       | Gene/ID   | Input Seq. | Trans. Input Seq. | Ref. ID | Ref. Seq. | Trans. Ref. Seq. | Mutations | AA Changes | All Mutations                    | Silent Mutations | Non-Silent Mutations             |
