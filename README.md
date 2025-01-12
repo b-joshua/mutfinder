@@ -87,7 +87,7 @@ python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species Homo_sapiens
 ```
 
 ### Diagram of input-to-reference comparison
-<img  src="InputToReference.PNG"  width="250" style="float: left; padding: 20px;"/>
+<img  src="InputToReference.PNG"  width="400" style="float: left; padding: 20px;"/>
 
 ### Sample output file:
 
