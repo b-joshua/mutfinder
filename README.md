@@ -4,15 +4,15 @@
 
 ---
 
-## How does **mutfinder** work?
+## How does mutfinder work?
 
-- Accepts input sequences in FASTA format.
-- Retrieves reference sequences based on:
-  - Gene symbol and species name.
-  - Ensembl gene or transcript ID.
-- Automatically identifies the longest reading frame for accurate translation.
-- Translates nucleotide sequences into amino acids using BioPython's `translate` method.
-- Generates a CSV file with detailed information on mutations, including:
+- Accepts an input sequence in FASTA format.
+- Retrieves reference sequences using `gget` based on:
+  - Gene symbol and species name
+  - Ensembl gene or transcript ID
+- Automatically identifies the longest reading frame for accurate translation
+- Translates nucleotide sequences into amino acids using Bio.Seq's `translate` method
+- Generates an output with detailed information on mutations, including:
   - Mutation type classification (silent/non-silent).
   - Full sequence comparison results.
   - Session-wide cumulative outputs.
@@ -40,7 +40,7 @@
 
 ---
 
-## How to use **mutfinder**
+## How to use mutfinder
 
 Run **mutfinder** from the command line using the following syntax:
 
@@ -49,13 +49,13 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 ```
 
 ### Parameters:
-- `-seqfile` (required): Path to the FASTA file containing the sequence to analyze.
+- `--seqfile` (required): Path to the FASTA file containing the sequence to analyze.
 - Either:
-  - `-gene` and `-species`: Specify the gene symbol (e.g., FOXP2) and species name (e.g., Homo sapiens).
-  - `-ensemblid`: Provide either an Ensembl gene ID (e.g., ENSG00000128573) or transcript ID (e.g., ENST00000408937.3).
+  - `--gene` and `--species`: Specify the gene symbol (e.g., FOXP2) and species name (e.g., Homo sapiens).
+  - `--ensemblid`: Provide either an Ensembl gene ID (e.g., ENSG00000128573) or transcript ID (e.g., ENST00000408937.3).
 - `--canonical` (optional): Restricts analysis to the canonical isoform of the provided gene.
 
-**Note:** You must provide either `-gene` and `-species` together or `-ensemblid`. Both cannot be provided simultaneously.
+**Note:** You must provide either `-gene` and `-species` together or `-ensemblid`. Both cannot be provided simultaneously. If providing an Ensembl gene ID, you can specify to use only the canonical transcript as the reference sequence. If you directly provide an Ensembl transcript ID, the `--canonical` input will be ignored and your sequence will be compared to the provided transcript regardless of whether it is the canonical transcript.  
 
 ---
 
@@ -78,7 +78,7 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 
 ---
 
-## Example
+## Example input and output
 
 ### Command:
 
@@ -86,7 +86,7 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species Homo_sapiens
 ```
 
-### Sample Output CSV:
+### Sample output file:
 
 | Date & Time       | Gene/ID   | Input Seq. | Trans. Input Seq. | Ref. ID | Ref. Seq. | Trans. Ref. Seq. | Mutations | AA Changes | All Mutations                    | Silent Mutations | Non-Silent Mutations             |
 |--------------------|-----------|------------|--------------------|---------|-----------|------------------|-----------|------------|----------------------------------|------------------|----------------------------------|
@@ -105,3 +105,8 @@ If you use **mutfinder**, please cite the following works for the tools and data
 - **UniProt**:  
   The UniProt Consortium, UniProt: the Universal Protein Knowledgebase in 2023, *Nucleic Acids Res.* 2023 Jan 6;51(D1):D523–D531. https://doi.org/10.1093/nar/gkac1052
 
+---
+
+## Comments and concerns
+
+If you have comments regarding this project, please open an **issue** in the GitHub repository **mutfinder**.
