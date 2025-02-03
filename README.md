@@ -93,7 +93,7 @@ python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species homo_sapiens
 
 | Search Date and Time | Input Gene/ID | Input Nucleotide Sequence | Translated Input Amino Acid Sequence | Reference Transcript ID | Reference Nucleotide Sequence | Translated Reference Amino Acid Sequence | Input Contains Mutations | List of Nucleotide Mutations                     | List of Amino Acid Mutations           | Alignment Warning                                                            |
 |----------------------|---------------|---------------------------|---------------------------------------|-------------------------|------------------------------|------------------------------------------|--------------------------|--------------------------------------------------|----------------------------------------|------------------------------------------------------------------------------|
-| 2025-01-10 12:34     | FOXP2         | ATG...TAA                | M...*                                 | ENST00000303444.10     | ATG...TAA                    | M...*                                    | True                     | 204-sub-A->T, 265-ins-AAA                         | sub-M->L, ins-K                        |      |
+| 2025-01-10 12:34     | FOXP2         | ATG...TAA                | M...*                                 | ENST00000303444.10     | ATG...TAA                    | M...*                                    | True                     | 204-sub-T->C, 265-ins-AAA                         | 68-sub-M->L, 89-ins-K                        |      |
 
 
 ---
