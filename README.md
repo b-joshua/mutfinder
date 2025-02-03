@@ -119,6 +119,8 @@ python3.13 mutfinder.py -seqfile H2AC6_insertion.fasta -ensemblid ENSG0000018057
 python3.13 mutfinder.py -seqfile ZNF814_WT.fasta -gene ZNF814 -species homo_sapiens --noncanonical
 ```
 
+Check out the results to these queries in `mutfinder_results.csv`, or run the code for yourself to see the alignment in your terminal!
+
 ---
 
 ## Citation
