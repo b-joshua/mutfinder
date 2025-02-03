@@ -36,6 +36,7 @@
 
 - [BioPython](https://biopython.org/docs/dev/api/Bio.Seq.html)
 - [gget](https://gget.readthedocs.io/)
+- [Requests](https://requests.readthedocs.io/en/latest/)
 
 ---
 
