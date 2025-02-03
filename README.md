@@ -9,11 +9,11 @@
 - Accepts an input sequence in FASTA format.
 - Retrieves reference sequences using `gget` based on:
   - Gene symbol and species name
-  - Ensembl gene or transcript ID
+  - Ensembl gene ID
 - Automatically identifies the longest reading frame for accurate translation
 - Translates nucleotide sequences into amino acids using Bio.Seq's `translate` method
 - Generates an output with detailed information on mutations, including:
-  - Mutation type classification (silent/non-silent).
+  - Nucleotide and Amino Acid-level analyses.
   - Full sequence comparison results.
   - Session-wide cumulative outputs.
 
@@ -37,6 +37,7 @@
 - [BioPython](https://biopython.org/docs/dev/api/Bio.Seq.html)
 - [gget](https://gget.readthedocs.io/)
 - [Requests](https://requests.readthedocs.io/en/latest/)
+- [Pandas](https://pandas.pydata.org/)
 
 ---
 
@@ -45,7 +46,7 @@
 Run **mutfinder** from the command line using the following syntax:
 
 ```bash
-python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -species <species>) | -ensemblid <ensembl_id>] [--canonical]
+python3.13 mutfinder.py -seqfile <sequence_file.fasta> (-gene <gene_symbol> -species <species>) | (-ensemblid <ensembl_id>) --noncanonical
 ```
 
 ### Parameters:
@@ -53,9 +54,8 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 - Either:
   - `--gene` and `--species`: Specify the gene symbol (e.g., FOXP2) and species name (e.g., Homo sapiens).
   - `--ensemblid`: Provide either an Ensembl gene ID (e.g., ENSG00000128573) or transcript ID (e.g., ENST00000408937.3).
-- `--canonical` (optional): Restricts analysis to the canonical isoform of the provided gene.
-
-**Note:** You must provide either `-gene` and `-species` together or `-ensemblid`. Both cannot be provided simultaneously. If providing an Ensembl gene ID, you can specify to use only the canonical transcript as the reference sequence. If you directly provide an Ensembl transcript ID, the `--canonical` input will be ignored and your sequence will be compared to the provided transcript regardless of whether it is the canonical transcript.  
+-  `--noncanonical` (optional): Run the analysis on ALL available transcripts. By default, mutfinder uses only the canonical transcript.
+**Note:** You must provide either `-gene` and `-species` together or `-ensemblid`. Both cannot be provided simultaneously.
 
 ---
 
@@ -67,14 +67,13 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 2. **Input gene name/ID**: Identifier for the input gene.
 3. **Input nucleotide sequence**: Sequence from the input FASTA file.
 4. **Translated input amino acid sequence**: Protein translation of the input sequence.
-5. **Reference sequence ID**: Identifier for the retrieved reference sequence.
+5. **Reference transcript ID**: Identifier for the retrieved reference sequence.
 6. **Reference nucleotide sequence**: Sequence of the reference.
 7. **Translated reference amino acid sequence**: Protein translation of the reference sequence.
-8. **Input contains mutations**: Boolean indicating if mutations exist.
-9. **Change in amino acid sequence**: Boolean indicating if the amino acid sequence differs between input and reference.
-10. **List of all mutations**: Mutations in the format: `M30T(pos.204C>T), T45A(pos.265A>G)`
-11. **List of silent mutations**: Silent mutations in the format: `MutationType(pos.PositionBaseChange)`
-12. **List of non-silent mutations**: Non-silent mutations in the format: `MutationType(pos.PositionBaseChange)`
+8. **Input contains mutations**: Boolean indicating if mutations exist in the input sequence compared to the reference.
+9. **List of nucleotide mutations**: Indicates nucleotide sequence changes between input and reference sequences (e.g. 123-del-A).
+10. **List of amino acid mutations**: Indicates amino acid changes between input and reference sequences (e.g. 45-sub-F->L).
+11. **Alignment Warning**: Provides a warning if the alignment between the input and reference sequences is lower than expected for the same isoform.
 
 ---
 
@@ -83,7 +82,7 @@ python mutfinder.py -seqfile <sequence_file.fasta> [(-gene <gene_symbol> -specie
 ### Command:
 
 ```bash
-python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species Homo_sapiens
+python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species homo_sapiens
 ```
 
 
@@ -92,9 +91,33 @@ python mutfinder.py -seqfile sample.fasta -gene FOXP2 -species Homo_sapiens
 
 ### Sample output file:
 
-| Date & Time       | Gene/ID   | Input Seq. | Trans. Input Seq. | Ref. ID | Ref. Seq. | Trans. Ref. Seq. | Mutations | AA Changes | All Mutations                    | Silent Mutations | Non-Silent Mutations             |
-|--------------------|-----------|------------|--------------------|---------|-----------|------------------|-----------|------------|----------------------------------|------------------|----------------------------------|
-| 2025-01-10 12:34  | FOXP2     | ATG...TAA  | M...*              | ENST... | ATG...TAA | M...*            | True      | True       | M30T(pos.204C>T), T45A(pos.265A>G) | None             | M30T(pos.204C>T), T45A(pos.265A>G) |
+| Search Date and Time | Input Gene/ID | Input Nucleotide Sequence | Translated Input Amino Acid Sequence | Reference Transcript ID | Reference Nucleotide Sequence | Translated Reference Amino Acid Sequence | Input Contains Mutations | List of Nucleotide Mutations                     | List of Amino Acid Mutations           | Alignment Warning                                                            |
+|----------------------|---------------|---------------------------|---------------------------------------|-------------------------|------------------------------|------------------------------------------|--------------------------|--------------------------------------------------|----------------------------------------|------------------------------------------------------------------------------|
+| 2025-01-10 12:34     | FOXP2         | ATG...TAA                | M...*                                 | ENST00000303444.10     | ATG...TAA                    | M...*                                    | True                     | 204-sub-A->T, 265-ins-AAA                         | sub-M->L, ins-K                        |      |
+
+
+---
+
+## Some ideas for how mutfinder can be helpful for you!
+
+#### 1. Search your reference sequence by gene symbol and species name:
+```bash
+python3.13 mutfinder.py -seqfile GCG_deletion.fasta -gene GCG -species homo_sapiens
+```
+
+```bash
+python3.13 mutfinder.py -seqfile TGIF2LY_SNP.fasta -gene TGIF2LY -species homo_sapiens
+```
+
+#### 2. Search your reference sequence by Ensembl gene ID:
+```bash
+python3.13 mutfinder.py -seqfile H2AC6_insertion.fasta -ensemblid ENSG00000180573
+```
+
+#### 3. Find the transcript that best matches your input sequence (noncanonical analysis):
+```bash
+python3.13 mutfinder.py -seqfile ZNF814_WT.fasta -gene ZNF814 -species homo_sapiens --noncanonical
+```
 
 ---
 
